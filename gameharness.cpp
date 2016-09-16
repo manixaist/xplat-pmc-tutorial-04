@@ -310,7 +310,7 @@ void GameHarness::DoPlayerBoundsCheck()
 // Called from normal play so just check the current cell
 bool GameHarness::IsPlayerWarpingOut()
 {
-    SDL_Point playerPoint = { _pPlayerSprite->X(), _pPlayerSprite->Y() };
+    SDL_Point playerPoint = { static_cast<int>(_pPlayerSprite->X()), static_cast<int>(_pPlayerSprite->Y()) };
     Uint16 row, col;
     _pMaze->GetTileRowCol(playerPoint, row, col);
     return ((row == 17) && ((col == 0) || (col == 27)));
@@ -463,7 +463,7 @@ GameHarness::GameState GameHarness::OnPlayerWarpingIn()
     // Maintain current velocity until we're back in frame
     _pPlayerSprite->Update();
 
-    SDL_Point playerPoint = { _pPlayerSprite->X(), _pPlayerSprite->Y() };
+    SDL_Point playerPoint = { static_cast<int>(_pPlayerSprite->X()), static_cast<int>(_pPlayerSprite->Y()) };
     Uint16 row, col;
     _pMaze->GetTileRowCol(playerPoint, row, col);
     if ((row == Constants::WarpRow) && ((col == 1) || (col == Constants::MapCols - 2)))

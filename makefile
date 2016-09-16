@@ -7,6 +7,7 @@ EXE_NAME = xplat-pmc-tutorial-04.exe
 # Generates a list of the modules with ".o" appended
 OBJS := \
 	main.o 		\
+	gameharness.o	\
 	tiledmap.o 	\
 	sprite.o 	\
 	utils.o 	\
