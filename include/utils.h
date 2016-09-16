@@ -6,6 +6,16 @@ namespace XplatGameTutorial
 {
 namespace PacManClone
 {
+    // Template helper to delete a class and set its pointer to nullptr
+    template <class T> void SafeDelete(T* p)
+    {
+        if (p != nullptr)
+        {
+            delete reinterpret_cast<T*>(p);
+            p = nullptr;
+        }
+    }
+
     // Load a texture from disk with optional transparency
     SDL_Texture* LoadTexture(const char *szFileName, SDL_Renderer *pSDLRenderer, SDL_Color *pSdlTransparencyColorKey);
     

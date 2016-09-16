@@ -26,6 +26,10 @@ namespace PacManClone
         static const Uint16 PlayerSpriteHeight = 32;
         static const Uint16 PlayerStartRow = 26;
         static const Uint16 PlayerStartCol = 13;
+        static const Uint16 TotalPellets = 244;
+        static const Uint32 LevelLoadDelay = 3000;
+        static const Uint32 LevelCompleteDelay = 6000;
+        static const Uint16 WarpRow = 17;
 
         // Indices to tiles that make up the map - for your own sanity use a level editor (several free ones exist) or better
         // yet develop your own tool early in the design process
@@ -52,10 +56,13 @@ namespace PacManClone
         static int PlayerAnimation_RIGHT[PlayerAnimationFrameCount];
         static int PlayerAnimation_DEATH[PlayerAnimationDeathFrameCount];
 
+        // Strings
+        static const char * const TilesImage;
+        static const char * const SpritesImage;
+
     private:
         static const Uint32 c_msPerSecond = 1000;
         static const Uint32 c_msPerFrame = (c_msPerSecond / FramesPerSecond);
     };
-    
 }
 }

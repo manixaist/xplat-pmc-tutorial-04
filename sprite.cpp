@@ -60,7 +60,7 @@ bool Sprite::LoadFrame(Uint16 frameIndex, Uint16 xTexture, Uint16 yTexture)
     if ((xTexture + _cxFrame > _pTextureWrapper->Width()) ||
         (yTexture + _cyFrame > _pTextureWrapper->Height()))
     {
-        printf("Sprite::LoadFrame() : frame bounds out of range {x:%d y:%d w:%d h:%d}\n", 
+        printf("Sprite::LoadFrame() : frame bounds out of range {x:%u y:%u w:%d h:%d}\n", 
             xTexture, yTexture, _pTextureWrapper->Width(), _pTextureWrapper->Height());
         fResult = false;
     }
@@ -194,7 +194,7 @@ void Sprite::Render(SDL_Renderer *pSDLRenderer)
     {
         // Find the index to the current frame in the current animation and draw it to the renderer
         // at the correct x,y delta offset
-        Uint16 frameIndex = (_ppSpriteAnimations == nullptr) ? _staticFrameIndex : _ppSpriteAnimations[_currentAnimationIndex]->CurrentFrame();
+        int frameIndex = (_ppSpriteAnimations == nullptr) ? _staticFrameIndex : _ppSpriteAnimations[_currentAnimationIndex]->CurrentFrame();
         SDL_Rect targetRect{ static_cast<int>(_x) + _cxFrameOffset, static_cast<int>(_y) + _cyFrameOffset, _cxFrame, _cyFrame };
         SDL_RenderCopy(
             pSDLRenderer,

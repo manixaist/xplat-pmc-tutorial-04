@@ -29,7 +29,7 @@ namespace PacManClone
             SDL_memset(&_textureRect, 0, sizeof(SDL_Rect));
         }
 
-        ~TiledMap()
+        virtual ~TiledMap()
         {
             // Free our allocated memory
             delete[] _pMapIndicies;
@@ -40,7 +40,7 @@ namespace PacManClone
         bool Initialize(SDL_Rect textureRect, SDL_Rect tileRect, SDL_Texture *pTexture, Uint16 *pMapIndices, Uint16 countOfIndicies);
         
         // Draw to the renderer at the current offset, etc
-        void Render(SDL_Renderer *pSDLRenderer);
+        virtual void Render(SDL_Renderer *pSDLRenderer);
         
         // Given an [row][col] location, return the (X,Y) coordinates on the screen
         SDL_Point GetTileCoordinates(Uint16 row, Uint16 col);
@@ -48,8 +48,11 @@ namespace PacManClone
         bool GetTileRowCol(SDL_Point &point, Uint16 &row, Uint16 &col);
         // Return the outer bounds of the map
         SDL_Rect GetMapBounds();
-
-    private:
+        
+    protected:
+        Uint16 GetTileIndexAt(Uint16 row, Uint16 col) { return _pMapIndicies[(row * _cCols) + col]; }
+        void SetTileIndexAt(Uint16 row, Uint16 col, Uint16 index) { _pMapIndicies[(row * _cCols) + col] = index; }
+        
         Uint16 _cxScreen;           // Total screen (window) width in pixels
         Uint16 _cyScreen;           // Total screen height
         Uint16 _cxWidth;            // Total width of map

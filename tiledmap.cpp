@@ -17,6 +17,7 @@ bool TiledMap::Initialize(
     SDL_assert((textureRect.w % tileRect.w) == 0);
     SDL_assert((textureRect.h % tileRect.h) == 0);
     SDL_assert(countOfIndicies == (_cRows * _cCols));
+    SDL_assert(pMapIndices != nullptr);
 
     // Copy the map indicies data
     _pMapIndicies = new Uint16[countOfIndicies] { };
@@ -28,27 +29,30 @@ bool TiledMap::Initialize(
 
     // Calculate the total available tiles on the texture and allocate space for the source rects
     // this is all just dividing the coordinate space into even squares
-    _tileSize = tileRect.w;         // Pick either, we assuming they are the same so far
-    Uint16 textureTilesPerWidth  = (_textureRect.w / _tileSize);    // The texture itself does not need to be square
-    Uint16 textureTilesPerHeight = (_textureRect.h / _tileSize);
-    _cTilesOnTexture = ((_textureRect.w / _tileSize) * textureTilesPerHeight);
+    _tileSize = static_cast<Uint16>(tileRect.w);
+    Uint16 textureTilesPerWidth  = static_cast<Uint16>((_textureRect.w / _tileSize));    // The texture itself does not need to be square
+    Uint16 textureTilesPerHeight = static_cast<Uint16>((_textureRect.h / _tileSize));
+    _cTilesOnTexture = static_cast<Uint16>(((_textureRect.w / _tileSize) * textureTilesPerHeight));
     _pTileRects = new SDL_Rect[_cTilesOnTexture] {};
-
+    
     // Center the map, so calculate the offsets
     _cxWidth = (_cCols * _tileSize);
     _cyHeight = (_cRows * _tileSize);
     _cxOffset = (_cxScreen - _cxWidth) / 2;
     _cyOffset = (_cyScreen - _cyHeight) / 2;
 
-    // Loop through the tiles and set the source rects
-    for (int r = 0; r < textureTilesPerHeight; r++)
+    if (_pTileRects != nullptr)
     {
-        for (int c = 0; c < textureTilesPerWidth; c++)
+        // Loop through the tiles and set the source rects
+        for (int r = 0; r < textureTilesPerHeight; r++)
         {
-            _pTileRects[((r * textureTilesPerHeight) + c)].h = _tileSize;
-            _pTileRects[((r * textureTilesPerHeight) + c)].w = _tileSize;
-            _pTileRects[((r * textureTilesPerHeight) + c)].x = _tileSize * c;
-            _pTileRects[((r * textureTilesPerHeight) + c)].y = _tileSize * r;
+            for (int c = 0; c < textureTilesPerWidth; c++)
+            {
+                _pTileRects[((r * textureTilesPerHeight) + c)].h = _tileSize;
+                _pTileRects[((r * textureTilesPerHeight) + c)].w = _tileSize;
+                _pTileRects[((r * textureTilesPerHeight) + c)].x = _tileSize * c;
+                _pTileRects[((r * textureTilesPerHeight) + c)].y = _tileSize * r;
+            }
         }
     }
     return true;
@@ -91,13 +95,13 @@ bool TiledMap::GetTileRowCol(SDL_Point &point, Uint16 &row, Uint16 &col)
     // First check if this point is even on the map
     SDL_Rect pointRect = { point.x, point.y, 1, 1 };
     SDL_Rect mapRect =  GetMapBounds();
-    bool fResult = SDL_HasIntersection(&mapRect, &pointRect);
+    bool fResult = (SDL_HasIntersection(&mapRect, &pointRect) == SDL_TRUE);
 
     if (fResult)
     {
         // If so convert it
-        row = (point.y - _cyOffset) / _tileSize;
-        col = (point.x - _cxOffset) / _tileSize;
+        row = static_cast<Uint16>((point.y - _cyOffset) / _tileSize);
+        col = static_cast<Uint16>((point.x - _cxOffset) / _tileSize);
     }
     return fResult;
 }
